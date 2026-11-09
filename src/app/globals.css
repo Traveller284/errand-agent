@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{--bg:#0f1420;--panel:#171e2e;--line:#2a3550;--fg:#e8ecf5;--mut:#9aa6c0;--ok:#34d399;--bad:#f87171;--acc:#60a5fa}
+body{@apply bg-[var(--bg)] text-[var(--fg)] text-[15px] leading-normal font-sans m-0}
+:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+@layer components{
+  button{@apply bg-[var(--acc)] text-[#07101f] rounded-lg px-3.5 py-2 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed}
+  button.ghost{@apply bg-transparent text-[var(--fg)] border border-[var(--line)]}
+  input,textarea{@apply bg-[#0c111c] border border-[var(--line)] rounded-lg p-2 w-full text-[var(--fg)]}
+  label{@apply block mt-2.5 mb-1 text-[var(--mut)] text-[13px]}
+  pre{@apply overflow-auto text-xs}
+  .top{@apply flex gap-4 items-center px-5 py-2.5 border-b border-[var(--line)]}
+  .badge{@apply text-xs px-2 py-0.5 rounded-full border border-[var(--line)] text-[var(--mut)]}
+  .badge.ok{@apply text-[var(--ok)] border-[var(--ok)]}
+  .badge.bad{@apply text-[var(--bad)] border-[var(--bad)]}
+  .main{@apply grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:h-[calc(100vh-56px)]}
+  .pane{@apply bg-[var(--panel)] border border-[var(--line)] rounded-xl flex flex-col min-h-[480px] overflow-hidden}
+  .msgs{@apply flex-1 overflow-auto p-3.5 flex flex-col gap-2.5}
+  .m{@apply max-w-[90%] px-3 py-2 rounded-[10px] whitespace-pre-wrap}
+  .m.user{@apply self-end bg-[#243352]}
+  .m.assistant{@apply bg-[#1d2740]}
+  .chip{@apply text-xs text-[var(--mut)] border border-dashed border-[var(--line)] rounded-full px-2.5 py-0.5 self-start}
+  .card{@apply border border-[var(--ok)] rounded-[10px] p-3 bg-[#10241f]}
+  .card.blocked{@apply border-[var(--bad)] bg-[#2a1519]}
+  .row{@apply flex gap-2 p-2.5 border-t border-[var(--line)]}
+  .ex{@apply flex gap-1.5 flex-wrap px-2.5 pb-2.5}
+  .tabs{@apply flex border-b border-[var(--line)]}
+  .tabs button{@apply bg-transparent text-[var(--mut)] rounded-none px-4 py-2.5}
+  .tabs button[aria-selected=true]{@apply text-[var(--fg)] border-b-2 border-[var(--acc)]}
+  .bar{@apply h-2.5 bg-[#0c111c] rounded-full overflow-hidden}
+  .bar>div{@apply h-full bg-[var(--acc)]}
+}
