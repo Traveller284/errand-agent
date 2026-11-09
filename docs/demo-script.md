@@ -24,4 +24,4 @@ Setup: app running, sandbox buyer logged in, policy at defaults ($100 per-order 
 - Policy tab: lower the cap live, show the spend progress bar.
 
 **5. Architecture and close (2:25-2:45)**
-"Groq tool use (with a scripted no-AI fallback) for the agent, a pure TypeScript policy engine, PayPal Orders v2 plus SDK v6 for checkout, signed and deduplicated webhooks, and the PayPal MCP server for an agent-side order lookup. Channel3 powers live product search. Guardrails first, payments second."
+"Groq tool use (with a scripted no-AI fallback) for the agent, a pure TypeScript policy engine, PayPal Orders v2 plus SDK v6 for checkout, signed and deduplicated webhooks, and the PayPal MCP server for an agent-side order lookup. Guardrails first, payments second."
