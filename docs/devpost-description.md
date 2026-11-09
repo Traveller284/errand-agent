@@ -14,3 +14,5 @@ Keeping the LLM away from money while keeping the experience fluid; adapting to 
 
 ## What's next
 Per-merchant and per-category budgets, delivery-date constraints from live shipping data, multi-user auth, spend-anomaly alerts, and letting the agent request a policy exception that a human can grant with one tap.
+
+Live demo: https://errand-agent.onrender.com

@@ -5,7 +5,7 @@ An AI shopping agent with spending guardrails that checks out through PayPal.
 **The LLM proposes, the policy engine decides, the human approves, the server charges.**
 The agent has no tool that can pay or capture. Every decision lands in a live ledger.
 
-> Status: unit tests (18/18) and the production build pass. The PayPal sandbox checkout (popup, approve, capture, ledger) has been run end to end on the author's machine. Not yet verified: webhook delivery, the hosted Render deploy and the optional Channel3 catalog. The agent uses Groq when GROQ_API_KEY is set and falls back to a scripted agent otherwise. Policy checks, approval, payment and the ledger are the same real code in both modes.
+> Status: unit tests (18/18) and the production build pass. The PayPal sandbox checkout (popup, approve, capture, ledger) has been run end to end on the author's machine. Hosted demo: https://errand-agent.onrender.com (free tier, so the first load can take about a minute; if the shared Groq quota runs out, the scripted agent answers instead). Not yet verified: webhook delivery and the optional Channel3 catalog. The agent uses Groq when GROQ_API_KEY is set and falls back to a scripted agent otherwise. Policy checks, approval, payment and the ledger are the same real code in both modes.
 
 ## Run it in under 10 minutes
 1. Node 22.13+ (uses Node's built-in SQLite, so there is no native build step). `git clone <repo> && cd errand-agent && cp .env.example .env`
