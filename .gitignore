@@ -6,4 +6,5 @@ node_modules
 data/
 *.db
 *.bak
-body.json*.tsbuildinfo
+body.json
+*.tsbuildinfo
