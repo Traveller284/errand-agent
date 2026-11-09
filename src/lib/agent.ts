@@ -7,7 +7,7 @@ import { getCart, getPolicy, monthToDateSpend, setStatus } from "./carts";
 
 export type Emit = (e: Record<string, unknown>) => void;
 type Msg = { role: "user" | "assistant"; content: string };
-type State = { cartId: string | null; checked: boolean; blocked: boolean };
+type State = { cartId: string | null; checked: boolean; blocked: boolean; asked?: boolean };
 
 const SYSTEM = `You are a careful personal shopping assistant for a user with spending guardrails.
 - Always use tools; never invent products or prices. Only recommend items returned by search_products.
@@ -60,7 +60,7 @@ async function exec(state: State, emit: Emit, name: string, input: unknown): Pro
     else db().prepare("INSERT INTO cart_items VALUES(?,?,?,?,?,?)").run(cartId, prod.id, prod.title, prod.price_cents, a.quantity, prod.category);
     const c = getCart(cartId)!;
     db().prepare("UPDATE carts SET total_cents=?, status='draft', last_policy_allowed=0 WHERE id=?").run(cartTotal(c.items), cartId);
-    state.checked = false;
+    state.checked = false; state.asked = false;
     return payload(cartId);
   }
   const { cart_id } = S.cart.parse(input);
@@ -79,7 +79,7 @@ async function exec(state: State, emit: Emit, name: string, input: unknown): Pro
   }
   if (name === "request_approval") { if (!state.checked) { await exec(state, emit, "check_policy", { cart_id }); }
     if (!res.allowed) return { error: "Cart fails policy; call check_policy and propose an alternative.", violations: res.violations };
-    setStatus(cart_id, "awaiting_approval");
+    setStatus(cart_id, "awaiting_approval"); state.asked = true;
     writeLedger({ cart_id, event_type: "approval_requested", decision: "n/a", actor: "agent", amount_cents: total });
     emit({ type: "approval", ...payload(cart_id) });
     return { status: "awaiting_user_approval" };
@@ -172,6 +172,7 @@ async function runGroq(messages: Msg[], emit: Emit, apiKey: string) {
   }
   if (!finished) emit({ type: "text", delta: "\n(Stopped after 8 steps.)" });
 
+  if (state.cartId && !state.asked) { if (!state.checked) { emit({ type: "tool", name: "check_policy" }); await exec(state, emit, "check_policy", { cart_id: state.cartId }); } if (!state.blocked) { emit({ type: "tool", name: "request_approval" }); await exec(state, emit, "request_approval", { cart_id: state.cartId }); } }
   // Server-side guarantee: every cart gets a recorded policy decision, even if the model skipped check_policy.
   if (state.cartId && !state.checked) {
     emit({ type: "tool", name: "check_policy" });
