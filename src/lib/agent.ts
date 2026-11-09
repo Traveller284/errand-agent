@@ -180,7 +180,7 @@ async function runGroq(messages: Msg[], emit: Emit, apiKey: string) {
 }
 
 export async function runAgent(messages: Msg[], emit: Emit) {
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY?.trim();
   if (process.env.AGENT_MODE === "scripted" || !apiKey) return runScripted(messages, emit);
   try {
     await runGroq(messages, emit, apiKey);

@@ -6,7 +6,7 @@ export type OrderItem = { title: string; price_cents: number; quantity: number }
 export const fmt = (cents: number) => (cents / 100).toFixed(2);
 
 export async function accessToken(): Promise<string> {
-  const id = process.env.PAYPAL_CLIENT_ID, secret = process.env.PAYPAL_CLIENT_SECRET;
+  const id = process.env.PAYPAL_CLIENT_ID?.trim(), secret = process.env.PAYPAL_CLIENT_SECRET?.trim();
   if (!id || !secret) throw new Error("PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET not set");
   const res = await fetch(`${BASE}/v1/oauth2/token`, {
     method: "POST",
@@ -68,7 +68,7 @@ export const getOrder = (orderId: string) => pp(`/v2/checkout/orders/${orderId}`
 
 /** Verifies a webhook via PayPal's verify-webhook-signature API. */
 export async function verifyWebhook(headers: Headers, event: unknown): Promise<boolean> {
-  const webhookId = process.env.PAYPAL_WEBHOOK_ID;
+  const webhookId = process.env.PAYPAL_WEBHOOK_ID?.trim();
   if (!webhookId) return false;
   const h = (k: string) => headers.get(k);
   const out = await pp("/v1/notifications/verify-webhook-signature", {
